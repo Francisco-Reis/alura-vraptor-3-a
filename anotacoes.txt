@@ -1,0 +1,38 @@
+==== VRAPTOR 3 =====
+Framework MVC agil criado pela Caelum
+
+Controller do Vreptor: precisam da anotação
+@Resource
+
+Dentro do controler, os metodos precisam ser marcados com seus URIs:
+Ex: @Path("/ajuda")
+
+Ao importar um projeto Eclipse, sempre marcar a opção de 'copiar para o workspace'
+import -> existing project into workspace.
+
+O VRaptor é um FrontController. Ele recebe todas as requisições
+e delega-as para os controladores exatos (por exemplo ProdutoController, IndexController, etc)
+/* - IndexController
+/produto/* - ProdutoController
+
+Ao criar um Controlodor e seus metodos, deve-se ter a mesma estrutura dentro de WEB-INF
+Ex:
+Classe ProdutoController
+metodo lista()
+No WEB-INF:
+pasta produto
+jsp lista.jsp
+
+Customização de URI
+Usando a anotação Path pode-se setar a URI que quiser para o metodo
+EX: metodo exibir com  @Path("/produto/{id}") -> já passa o id por GET de uma forma customizada
+
+Taglib pra resolver urls de forma inteligente, sem precisar passar o nome do projeto:
+<c:url value="/produto/adiciona"/>
+Tudo isso deve ser colocado dentro do action da tag form
+
+Recursos que só aceitam POST devem ser anotados com: @Post
+
+No caso abaixo, a variavel acessivel no JSP é "${produtoList}"
+public List<Produto> lista() {
+}
