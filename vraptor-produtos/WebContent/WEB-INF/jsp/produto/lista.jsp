@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<p>${mensagem }</p>
+
 <table>
 <c:forEach var="produto" items="${produtoList }" >
 <tr>

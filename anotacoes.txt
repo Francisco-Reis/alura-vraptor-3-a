@@ -36,3 +36,34 @@ Recursos que só aceitam POST devem ser anotados com: @Post
 No caso abaixo, a variavel acessivel no JSP é "${produtoList}"
 public List<Produto> lista() {
 }
+
+Para redirecionar o fluxo para outro metodo do Controller, precisamos setar o atributo Result,
+passar no construtor e depois dar um forward, ex:
+@Resource
+public class ProdutoController {
+
+    private final Result result;
+
+    public ProdutoController(Result result) {
+        this.result = result;
+    }
+No método usar:
+result.forwardTo(NomeDaClasse.class).outrometodo();
+->forwardTo: mesma requisicão, pode dar problemas na url (lado servidor)
+->redirectTo: nova requisicão (lado cliente)
+
+Incluir variaveis na sessao
+result.include(): Inclui variaveis no Result que sao salvas na session.
+
+-- Transformar em XML/JSON e jogar na sessão --
+result.use(Results.xml()).from(nomeObjeto).serialize();
+      ...         .json() ...
+OBS: Esses metodos que transformam em XML/JSON nao precisam de JSPs correspondentes.
+
+--- @Component ---
+Classes com essa anotacao sao instanciadas pelo VRaptor quando forem chamadas
+
+--- SESSION ou REQUEST scoped ----
+Por padrao o VRaptor eh request scoped e trabalha com os objetos por requisicao.
+Para que os objetos sejam gravados na sessao, precis-se da anotacao:
+@SessionScoped
