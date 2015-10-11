@@ -67,3 +67,29 @@ Classes com essa anotacao sao instanciadas pelo VRaptor quando forem chamadas
 Por padrao o VRaptor eh request scoped e trabalha com os objetos por requisicao.
 Para que os objetos sejam gravados na sessao, precis-se da anotacao:
 @SessionScoped
+
+IMPORTANTE: Conexoes com BD devem ser curtas, ou seja, sempre por RequestScoped
+Para economizar tempo ao abrir e fechar conexoes, um pool de conexoes deve ser utilizado
+
+---- VALIDATOR ----
+Classe de validacao do VRaptor. Deve ser passada no Construtor
+validator.add(new ValidationMessage("Mensagem do erro","categoria_erro")); -> guarda erro
+validator.onErrorUsePageOf(AlgumController.class).metodo() -> redireciona caso tenha erros
+Para mostrar o erro na tela JSP:
+<c:forEach items="${errors}" var="error">
+    ${error.category} - ${error.message} <br />
+</c:forEach>
+
+Boa pratica, externalizar as mensagens colocando em um arquivo properties.
+Depois, adicione a mensagem da forma abaixo
+validator.add(new I18nMessage("preco", "produto.preco.invalido"));
+
+Outra forma de add o erro, essa sem IFs, a seguir:
+validator.checking(new Validations(){{
+	        // o preço deve ser maior que 0.1
+	        that(produto.getPreco() > 0.1,"erro", "produto.preco.invalido");
+	       }});
+As variaveis usadas precisam ser marcadas com final.
+
+--- Retornar nada ---
+Com result.nothing() o VRaptor vai retornar uma resposta HTTP com o status code 200 sem nenhum HTML 
